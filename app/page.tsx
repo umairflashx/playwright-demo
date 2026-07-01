@@ -47,7 +47,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Create project</CardTitle>
+          <CardTitle>Create Demo project</CardTitle>
           <CardDescription>
             Bootstrap your new project in one-click.
           </CardDescription>
