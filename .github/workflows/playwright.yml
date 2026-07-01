@@ -33,7 +33,7 @@ jobs:
       - name: Install Chromium
         run: pnpm exec playwright install chromium --with-deps
 
-      - name: Run Playwright tests
+      - name: Run Playwright tests demo
         run: pnpm exec playwright test
         env:
           ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
