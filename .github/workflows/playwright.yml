@@ -35,6 +35,8 @@ jobs:
 
       - name: Run Playwright tests
         run: pnpm exec playwright test
+        env:
+          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
 
       - uses: actions/upload-artifact@v3
         if: always()
