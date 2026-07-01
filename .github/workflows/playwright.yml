@@ -7,20 +7,20 @@ on:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout project
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: 8
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "latest"
+          node-version: 22
           cache: pnpm
 
       - name: Install dependencies
@@ -31,12 +31,15 @@ jobs:
         run: pnpm run build
 
       - name: Install Chromium
+        timeout-minutes: 10
         run: pnpm exec playwright install chromium --with-deps
 
-      - name: Run Playwright tests
+      - name: Run Playwright tests demo
         run: pnpm exec playwright test
+        env:
+          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
