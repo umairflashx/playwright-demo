@@ -35,11 +35,28 @@ jobs:
       - name: Install Chromium
         timeout-minutes: 10
         run: pnpm exec playwright install chromium --with-deps
+      
+      - name: Debug Argos metadata
+        run: |
+          echo "event=${{ github.event_name }}"
+          echo "branch=${{ github.head_ref || github.ref_name }}"
+          echo "commit=${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}"
+          echo "pr=${{ github.event_name == 'pull_request' && github.event.pull_request.number || '' }}"
+          echo "referenceBranch=main"
+
+          if [ -z "${{ secrets.ARGOS_TOKEN }}" ]; then
+            echo "ARGOS_TOKEN is missing"
+          else
+            echo "ARGOS_TOKEN is present"
+          fi
 
       - name: Run Playwright tests demo
         run: pnpm exec playwright test
         env:
           ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+          ARGOS_BRANCH: ${{ github.head_ref || github.ref_name }}
+          ARGOS_COMMIT: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          ARGOS_PR_NUMBER: ${{ github.event_name == 'pull_request' && github.event.pull_request.number || '' }}
 
       - uses: actions/upload-artifact@v4
         if: always()
