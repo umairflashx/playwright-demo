@@ -49,7 +49,7 @@ export default function Home() {
         <CardHeader>
           <CardTitle>Create Alpha Test project</CardTitle>
           <CardDescription>
-            Bootstrap your new project in one-click.
+            Bootstrap your new demo project in just one-click.
           </CardDescription>
         </CardHeader>
         <CardContent>
