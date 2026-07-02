@@ -17,7 +17,29 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI
-    ? [...defaultReporters, ["@argos-ci/playwright/reporter"]]
+    ? [
+      ...defaultReporters,
+      [
+        "@argos-ci/playwright/reporter",
+        {
+          uploadToArgos: true,
+          token: process.env.ARGOS_TOKEN,
+
+          // Important: keep this identical on main and PR branches
+          buildName: "playwright",
+
+          // Explicit metadata for Argos
+          branch: process.env.ARGOS_BRANCH,
+          commit: process.env.ARGOS_COMMIT,
+          prNumber: process.env.ARGOS_PR_NUMBER
+            ? Number(process.env.ARGOS_PR_NUMBER)
+            : undefined,
+
+          // Force comparison against main
+          referenceBranch: "main",
+        },
+      ],
+    ]
     : defaultReporters,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
